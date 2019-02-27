@@ -31,7 +31,7 @@ def about():
 @app.route("/login", methods=["GET", "POST"])
 def login():
     form = LoginForm()
-    if request.method == "POST" and form.validate_onsubmit():
+    if request.method == "POST" and form.validate_on_submit():
         # change this to actually validate the entire form submission
         # and not just one field
         username = form.username.data
@@ -57,7 +57,11 @@ def login():
             return redirect(url_for("secure-page"))  # they should be redirected to a secure-page route instead
     return render_template("login.html", form=form)
 
-
+@app.route('/secure-page')
+@login_required
+def secure_page():
+    return render_template('secure_page.html')
+    
 # user_loader callback. This callback is used to reload the user object from
 # the user ID stored in the session
 @login_manager.user_loader
